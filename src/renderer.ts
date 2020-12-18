@@ -6,6 +6,6 @@
  * https://electronjs.org/docs/tutorial/security
  */
 
-import './index.css';
+import './styles/index.less';
 
 console.log('👋 This message is being logged by "renderer.js", included via webpack');
