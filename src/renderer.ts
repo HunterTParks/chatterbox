@@ -7,5 +7,12 @@
  */
 
 import './styles/index.less';
+declare global {
+    interface Window {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        chatterBoxAPI: Record<string, any>
+    }
+}
 
 console.log('👋 This message is being logged by "renderer.js", included via webpack');
+window.chatterBoxAPI.subscribeChat();

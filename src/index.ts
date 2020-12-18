@@ -1,4 +1,8 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
+import path from 'path';
+import { ChatSubscriberFactory } from './components';
+import { AppStore } from './store';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -11,6 +15,11 @@ const createMainWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
+    webPreferences: {
+      enableRemoteModule: true,
+      contextIsolation: true,
+      preload: path.join(__dirname, '../renderer/preload/index.js')
+    }
   });
 
   // and load the index.html of the app.
@@ -42,6 +51,13 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createMainWindow();
   }
+});
+
+ipcMain.handle('chatSubscribe', ( event, ...args ) => {
+  console.log('ChatSubscriberFactory: ', ChatSubscriberFactory);
+  console.log('AppStore: ', AppStore);
+  console.log('Event: ', event);
+  console.log('Args: ', args);
 });
 
 // In this file you can include the rest of your app's specific main process
