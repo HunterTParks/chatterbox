@@ -2,6 +2,7 @@
 @import 'config.less';
 @import 'common.less';
 @import 'credentials.less';
+@import 'channels.less';
 
 // Common icon styles
 i {
@@ -114,5 +115,65 @@ body {
             padding: 2rem;
         }
     }
+
+    .section {
+        .section-title {
+            .form-title {
+                font-size: 28px;
+                padding: 0 0 0.8rem 0;
+            }
+        }
+        
+        form {
+            position: relative;
+        
+            > .input-container {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                width: 400px;
+                height: 36px;
+                border: 1px solid white;
+                border-radius: 5px;
+                background-color: rgb(245, 241, 241);
+                color: @syntax-bg;
+                margin-bottom: 20px;
+        
+                > .input-text {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    align-items: center;
+                    font-weight: 600;
+                    width: 100%;
+                    overflow: hidden;
+        
+                    > label {
+                        width: 26%;
+                        background-color: @mono-1;
+                        height: 150%;
+                        text-align: center;
+                        padding-top: 36px;
+                    }
+        
+                    > input {
+                        width: 73%;
+                        height: 36px;
+                        background-color: rgb(245, 241, 241);
+                        border: 0;
+                        font-size: 24px;
+                    }
+                }
+        
+            }
+        
+            > .form-submission {
+                float: right;
+                
+                > button {
+                    .submission-button();
+                }
+            }
+        }
+    }
 }
-  
