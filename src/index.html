@@ -16,7 +16,7 @@
       <div id="sidebar-container">
         <div id="sidebar-list">
           <div id="nav-introduction" class="sidebar-item selected">Introduction</div>
-          <div id="nav-fake" class="sidebar-item">Next Section</div>
+          <div id="nav-credentials" class="sidebar-item">Credentials</div>
           <div id="nav-next" class="sidebar-item">This next section</div>
         </div>
         <div id="sidebar-toggle">
@@ -30,8 +30,29 @@
           <h1>💖 Hello World!</h1>
           <p>Welcome to your Electron application.</p>
         </div>
-        <div id="fake" class="hidden">
-          This is hidden content!
+        <div id="credentials" class="hidden">
+          <form id="credentials-form">
+            <div class="form-title-container">
+              <div class="form-title">Credentials</div>
+            </div>
+            <div class="input-container">
+              <div class="input-text">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" required>
+              </div>
+              <div class="required">*</div>
+            </div>
+            <div class="input-container">
+              <div class="input-text">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" required>
+              </div>
+              <div class="required">*</div>
+            </div>
+            <div class="form-submission">
+              <button type="submit">Save</button>
+            </div>
+          </form>
         </div>
         <div id="next" class="hidden">
           This is ALSO hidden content.

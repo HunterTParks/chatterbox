@@ -13,6 +13,8 @@ const registerEvents = () => {
     const sidebarContainer = document.getElementById('sidebar-container');
     const toggleSidebar = document.getElementById('sidebar-toggle');
     const navItems = document.querySelectorAll('.sidebar-item');
+    const credentialsForm = document.getElementById('credentials-form');
+    console.log('Credentials form: ', credentialsForm);
     
     window.addEventListener('resize', () => {
         const sidebar = document.getElementById('sidebar-list');
@@ -44,6 +46,33 @@ const registerEvents = () => {
             toBeActiveContent.classList.remove('hidden');
         });
     });
+
+    credentialsForm.addEventListener('submit', ( e ) => {
+        console.log('Testing');
+        e.preventDefault();
+
+        const username: HTMLInputElement = <HTMLInputElement>document.getElementById('username');
+        const password: HTMLInputElement = <HTMLInputElement>document.getElementById('password');
+
+        if( 
+            username.value && username.value !== undefined &&
+            password.value && password.value !== undefined
+        ) {
+            window.chatterBoxAPI.setCredentials(username.value, password.value);
+            console.log('values set');
+        }
+    });
+}
+
+const fillOutFields = () => {
+    const username: HTMLInputElement = <HTMLInputElement>document.getElementById('username');
+    const password: HTMLInputElement = <HTMLInputElement>document.getElementById('password');
+    const [ setUsername, setPassword ] = window.chatterBoxAPI.getCredentials();
+
+    if ( setUsername )
+        username.value = setUsername;
+    if ( setPassword )
+        password.value = setPassword;
 }
 
 const setHeightContext = () => {
@@ -55,6 +84,7 @@ const main = (): void => {
     const mainContent = document.getElementById('main');
     const loadingIcon = document.getElementById('loading');
     registerEvents();
+    fillOutFields();
     
     console.log('👋 This message is being logged by "renderer.js", included via webpack');
     window.chatterBoxAPI.subscribeChat();
