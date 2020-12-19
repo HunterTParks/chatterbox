@@ -47,7 +47,7 @@ const StoreSchema: Record<string, unknown> = {
     },
     channels: {
         type: 'array',
-        maxItems: 5,
+        maxItems: 20,
         minItems: 0
     },
     theme: {
