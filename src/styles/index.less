@@ -11,66 +11,74 @@ i {
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
     
     &.default {
         background-color: @syntax-bg;
         color: @mono-1;
     }
+
+    > #loading {
+        transition: 1s;
+    }
     
-    > .sidebar-container {
+    > #main {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        height: auto;
-        
-        > .sidebar-list {
+        transition: 1s;
+
+        > .sidebar-container {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             flex-wrap: nowrap;
+            height: auto;
             
-            > .sidebar-item {
-                padding: 1rem;
+            > .sidebar-list {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                
+                > .sidebar-item {
+                    padding: 1rem;
+                }
             }
-        }
-
-        > .sidebar-toggle {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
-            padding: 0 5px;
-            .box-shadow();
-            
-            > .sidebar-toggle-icon {
-                height: 1rem;
-                padding: 0.5rem 0.5rem 0.5rem 0;
-
-                > i {
-                    display: table;
-                    position: relative;
-                    margin: 0 auto;
-
-                    &.arrow-right {
-                        .arrow-right();
-                        border-color: @mono-1;
-                    }
-
-                    &.arrow-left {
-                        .arrow-left();
-                        border-color: @mono-1;
+    
+            > .sidebar-toggle {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                padding: 0 5px;
+                .box-shadow();
+                
+                > .sidebar-toggle-icon {
+                    height: 1rem;
+                    padding: 0.5rem 0.5rem 0.5rem 0;
+    
+                    > i {
+                        display: table;
+                        position: relative;
+                        margin: 0 auto;
+    
+                        &.arrow-right {
+                            .arrow-right();
+                            border-color: @mono-1;
+                        }
+    
+                        &.arrow-left {
+                            .arrow-left();
+                            border-color: @mono-1;
+                        }
                     }
                 }
             }
         }
-    }
-    
-    > .main {
-        padding: 2rem;
+        
+        > .content {
+            padding: 2rem;
+        }
     }
 }
   

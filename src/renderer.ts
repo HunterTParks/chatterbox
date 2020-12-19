@@ -14,5 +14,17 @@ declare global {
     }
 }
 
-console.log('👋 This message is being logged by "renderer.js", included via webpack');
-window.chatterBoxAPI.subscribeChat();
+const main = (): void => {
+    const mainContent = document.getElementById('main');
+    const loadingIcon = document.getElementById('loading');
+
+    console.log('👋 This message is being logged by "renderer.js", included via webpack');
+    window.chatterBoxAPI.subscribeChat();
+    
+    setTimeout(() => {
+        loadingIcon.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+    }, 2000);
+}
+
+main();
