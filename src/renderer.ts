@@ -14,7 +14,7 @@ const registerEvents = () => {
     const toggleSidebar = document.getElementById('sidebar-toggle');
     const navItems = document.querySelectorAll('.sidebar-item');
     const credentialsForm = document.getElementById('credentials-form');
-    console.log('Credentials form: ', credentialsForm);
+    const channelsForm = document.getElementById('channels-form');
     
     window.addEventListener('resize', () => {
         const sidebar = document.getElementById('sidebar-list');
@@ -48,7 +48,6 @@ const registerEvents = () => {
     });
 
     credentialsForm.addEventListener('submit', ( e ) => {
-        console.log('Testing');
         e.preventDefault();
 
         const username: HTMLInputElement = <HTMLInputElement>document.getElementById('username');
@@ -62,17 +61,51 @@ const registerEvents = () => {
             console.log('values set');
         }
     });
+
+    channelsForm.addEventListener('submit', ( e ) => {
+        e.preventDefault();
+
+        const channel: HTMLInputElement = <HTMLInputElement>document.getElementById('channel-input');
+        if( channel.value && channel.value !== undefined ) {
+            window.chatterBoxAPI.addChannel( channel.value );
+            channel.value = '';
+        }
+
+        fillChannelList();
+    });
 }
 
 const fillOutFields = () => {
     const username: HTMLInputElement = <HTMLInputElement>document.getElementById('username');
     const password: HTMLInputElement = <HTMLInputElement>document.getElementById('password');
     const [ setUsername, setPassword ] = window.chatterBoxAPI.getCredentials();
-
+    
     if ( setUsername )
         username.value = setUsername;
     if ( setPassword )
         password.value = setPassword;
+
+    fillChannelList();
+}
+
+const fillChannelList = () => {
+    const channelList: HTMLUListElement = <HTMLUListElement>document.getElementById('channels-list');
+    const channels: Array<string> = window.chatterBoxAPI.getChannels();
+
+    channelList.innerHTML = '';
+
+    if( channels && channels.length > 0) {
+        channels.forEach(( item: string, index: number ) => {
+            const li: HTMLLIElement = document.createElement('li');
+            li.setAttribute('class', 'channel');
+            li.setAttribute('id', `channel-${index}`);
+            li.appendChild(document.createTextNode(item));
+            
+            channelList.appendChild(li); 
+        });
+    } else {
+        console.log('Channels not found');
+    }
 }
 
 const setHeightContext = () => {

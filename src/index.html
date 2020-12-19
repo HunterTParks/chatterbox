@@ -17,7 +17,7 @@
         <div id="sidebar-list">
           <div id="nav-introduction" class="sidebar-item selected">Introduction</div>
           <div id="nav-credentials" class="sidebar-item">Credentials</div>
-          <div id="nav-next" class="sidebar-item">This next section</div>
+          <div id="nav-channels" class="sidebar-item">Channels</div>
         </div>
         <div id="sidebar-toggle">
           <div class="sidebar-toggle-icon">
@@ -30,11 +30,11 @@
           <h1>💖 Hello World!</h1>
           <p>Welcome to your Electron application.</p>
         </div>
-        <div id="credentials" class="hidden">
+        <div id="credentials" class="section hidden">
+          <div class="section-title">
+            <div class="form-title">Credentials</div>
+          </div>
           <form id="credentials-form">
-            <div class="form-title-container">
-              <div class="form-title">Credentials</div>
-            </div>
             <div class="input-container">
               <div class="input-text">
                 <label for="username">Username</label>
@@ -54,8 +54,27 @@
             </div>
           </form>
         </div>
-        <div id="next" class="hidden">
-          This is ALSO hidden content.
+        <div id="channels" class="section hidden">
+          <div class="section-title">
+            <div class="form-title">Channels</div>
+          </div>
+          <ul id="channels-list">
+            <!-- List will be filled based on the App Store -->
+          </ul>
+          <form id="channels-form">
+            <div class="section-title">
+              <div class="form-title">Add Channel</div>
+            </div>
+            <div class="input-container">
+              <div class="input-text">
+                <label for="channel">New Channel</label>
+                <input type="text" name="channel" id="channel-input" />
+              </div>
+            </div>
+            <div class="form-submission">
+              <button type="submit">Add</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

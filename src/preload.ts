@@ -8,5 +8,14 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
         AppStore.store.set('password', password);
     },
     getCredentials: () => [ AppStore.store.get('username'), AppStore.store.get('password') ],
-    channels: AppStore.store.get('channels')
+    getChannels: () => AppStore.store.get('channels'),
+    addChannel: ( channel: string ) => {
+        const channels: Array<string> = <Array<string>>AppStore.store.get('channels');
+        if ( channels && channels.length > 0 ) {
+            channels.push( channel );
+            AppStore.store.set('channels', channels );
+        } else {
+            AppStore.store.set('channels', [ channel ]);
+        }
+    }
 });
