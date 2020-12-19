@@ -46,6 +46,17 @@ body {
                     overflow: hidden;
                     padding: 1rem;
                     width: 128px;
+                    cursor: pointer;
+                    transition: .3s;
+
+                    &:hover {
+                        background-color: @syntax-guide;
+                    }
+
+                    &.selected {
+                        background-color: @syntax-fg;
+                        color: @syntax-bg;
+                    }
                 }
             }
     
@@ -57,6 +68,7 @@ body {
                 border-top-right-radius: 10px;
                 border-bottom-right-radius: 10px;
                 padding: 0 5px;
+                cursor: pointer;
                 .box-shadow();
                 
                 > .sidebar-toggle-icon {

@@ -12,6 +12,7 @@ declare const window: any;
 const registerEvents = () => {
     const sidebarContainer = document.getElementById('sidebar-container');
     const toggleSidebar = document.getElementById('sidebar-toggle');
+    const navItems = document.querySelectorAll('.sidebar-item');
     
     window.addEventListener('resize', () => {
         const sidebar = document.getElementById('sidebar-list');
@@ -23,6 +24,25 @@ const registerEvents = () => {
         sidebarContainer.classList.toggle('closed');
         icon.classList.toggle('arrow-right');
         icon.classList.toggle('arrow-left');
+    });
+
+    navItems.forEach( ( item: Element ) => {
+        item.addEventListener( 'click', () => {
+            const selectedNavItem = document.querySelector('.sidebar-item.selected');
+            
+            selectedNavItem.classList.remove('selected');
+            item.classList.add('selected');
+
+            const testString = document.querySelector('.sidebar-item.selected').id.replace('nav-', '');
+            const toBeActiveContent = document.getElementById(testString);
+            const activeContent = document.querySelector('#main .content .active');
+
+            activeContent.classList.remove('active');
+            toBeActiveContent.classList.add('active');
+
+            activeContent.classList.add('hidden');
+            toBeActiveContent.classList.remove('hidden');
+        });
     });
 }
 

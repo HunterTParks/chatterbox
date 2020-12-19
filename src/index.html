@@ -15,11 +15,9 @@
     <div id="main" class="hidden">
       <div id="sidebar-container">
         <div id="sidebar-list">
-          <div class="sidebar-item">Sidebar #1</div>
-          <div class="sidebar-item">Sidebar #2</div>
-          <div class="sidebar-item">Sidebar #3</div>
-          <div class="sidebar-item">Sidebar #4</div>
-          <div class="sidebar-item">Sidebar #5</div>
+          <div id="nav-introduction" class="sidebar-item selected">Introduction</div>
+          <div id="nav-fake" class="sidebar-item">Next Section</div>
+          <div id="nav-next" class="sidebar-item">This next section</div>
         </div>
         <div id="sidebar-toggle">
           <div class="sidebar-toggle-icon">
@@ -28,8 +26,16 @@
         </div>
       </div>
       <div class="content">
-        <h1>💖 Hello World!</h1>
-        <p>Welcome to your Electron application.</p>
+        <div id="introduction" class="active">
+          <h1>💖 Hello World!</h1>
+          <p>Welcome to your Electron application.</p>
+        </div>
+        <div id="fake" class="hidden">
+          This is hidden content!
+        </div>
+        <div id="next" class="hidden">
+          This is ALSO hidden content.
+        </div>
       </div>
     </div>
   </body>
