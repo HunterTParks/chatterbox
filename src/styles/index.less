@@ -27,23 +27,29 @@ body {
         flex-wrap: nowrap;
         transition: 1s;
 
-        > .sidebar-container {
+        > #sidebar-container {
             display: flex;
             flex-direction: row;
             flex-wrap: nowrap;
             height: auto;
+            width: 25%;
+            transition: 0.5s;
             
-            > .sidebar-list {
+            > #sidebar-list {
+                position: relative;
                 display: flex;
                 flex-direction: column;
                 flex-wrap: nowrap;
+                width: 100%;
                 
                 > .sidebar-item {
+                    overflow: hidden;
                     padding: 1rem;
+                    width: 128px;
                 }
             }
     
-            > .sidebar-toggle {
+            > #sidebar-toggle {
                 position: relative;
                 display: flex;
                 justify-content: center;
@@ -55,22 +61,37 @@ body {
                 
                 > .sidebar-toggle-icon {
                     height: 1rem;
-                    padding: 0.5rem 0.5rem 0.5rem 0;
-    
+                    padding: 0.5rem 0.2rem 0.5rem 0.5rem;
+                    
                     > i {
                         display: table;
                         position: relative;
                         margin: 0 auto;
-    
+                        
                         &.arrow-right {
                             .arrow-right();
                             border-color: @mono-1;
                         }
-    
+                        
                         &.arrow-left {
                             .arrow-left();
                             border-color: @mono-1;
                         }
+                    }
+                }
+            }
+            
+            &.closed {
+                width: 0%;
+                
+                > #sidebar-list {
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                > #sidebar-toggle {
+                    > .sidebar-toggle-icon {
+                        padding: 0.5rem 0.5rem 0.5rem 0;
                     }
                 }
             }

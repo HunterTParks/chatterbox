@@ -10,11 +10,16 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
   app.quit();
 }
 
+const initialize = (): void => {
+  AppStore.store.set('windowWidth', 800);
+  AppStore.store.set('windowHeight', 600);
+}
+
 const createMainWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
+    height: <number>AppStore.store.get('windowHeight'),
+    width: <number>AppStore.store.get('windowWidth'),
     webPreferences: {
       enableRemoteModule: true,
       contextIsolation: true,
@@ -33,6 +38,7 @@ const createMainWindow = (): void => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
+  initialize();
   createMainWindow();
 });
 

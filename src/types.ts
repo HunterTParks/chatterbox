@@ -53,6 +53,14 @@ const StoreSchema: Record<string, unknown> = {
     theme: {
         type: 'string',
         default: 'default'
+    },
+    windowWidth: {
+        type: Number,
+        default: 800
+    },
+    windowHeight: {
+        type: Number,
+        default: 600
     }
 }
 
