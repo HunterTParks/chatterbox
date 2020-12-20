@@ -15,7 +15,7 @@ const registerEvents = () => {
     const navItems = document.querySelectorAll('.sidebar-item');
     const credentialsForm = document.getElementById('credentials-form');
     const channelsForm = document.getElementById('channels-form');
-    const toggleOn = document.getElementById('toggle-actions');
+    const toggleOn = document.querySelectorAll('.toggle-group');
     
     window.addEventListener('resize', () => {
         setHeightContext();
@@ -75,9 +75,11 @@ const registerEvents = () => {
         registerChannelLiEvents();
     });
 
-    toggleOn.addEventListener('click', () => {
-        const toggle = document.getElementById('button-on-container');
-        toggle.classList.toggle('on');
+    toggleOn.forEach( ( item: HTMLElement ) => {
+        item.addEventListener('click', () => {
+            const toggle = item.querySelector('.button-on-container');
+            toggle.classList.toggle('on');
+        });
     });
 
     registerChannelLiEvents();
