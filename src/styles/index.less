@@ -3,6 +3,7 @@
 @import 'common.less';
 @import 'credentials.less';
 @import 'channels.less';
+@import 'footer.less';
 
 // Common icon styles
 i {
@@ -26,7 +27,7 @@ body {
     > #main {
         display: flex;
         flex-direction: row;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         transition: 1s;
 
         > #sidebar-container {
@@ -112,6 +113,7 @@ body {
         }
         
         > .content {
+            width: 60%;
             padding: 2rem;
         }
     }

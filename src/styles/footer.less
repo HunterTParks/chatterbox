@@ -1,0 +1,37 @@
+.footer {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    bottom: 0%;
+    width: 100%;
+    height: 36px;
+    background-color: @syntax-guide;
+
+    > .total-chats-container {
+        padding-left: 20px;
+        width: 20%;
+    }
+
+    > .total-actions-container {
+        width: 20%;
+    }
+
+    > .action-buttons-container {
+        width: 80%;
+        padding-right: 20px;
+
+        .toggle-actions-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            float: right;
+
+            > #toggle-actions {
+                margin-left: 5px;
+                .toggle-button();
+            }
+        }
+    }
+}

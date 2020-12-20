@@ -15,10 +15,10 @@ const registerEvents = () => {
     const navItems = document.querySelectorAll('.sidebar-item');
     const credentialsForm = document.getElementById('credentials-form');
     const channelsForm = document.getElementById('channels-form');
+    const toggleOn = document.getElementById('toggle-actions');
     
     window.addEventListener('resize', () => {
-        const sidebar = document.getElementById('sidebar-list');
-        sidebar.style.height = `${window.innerHeight}px`;
+        setHeightContext();
     });
 
     toggleSidebar.addEventListener('click', () => {
@@ -73,6 +73,11 @@ const registerEvents = () => {
 
         fillChannelList();
         registerChannelLiEvents();
+    });
+
+    toggleOn.addEventListener('click', () => {
+        const toggle = document.getElementById('button-on-container');
+        toggle.classList.toggle('on');
     });
 
     registerChannelLiEvents();
@@ -155,7 +160,7 @@ const fillChannelList = () => {
 
 const setHeightContext = () => {
     const sidebar = document.getElementById('sidebar-list');
-    sidebar.style.height = `${window.innerHeight}px`;
+    sidebar.style.height = `${window.innerHeight - 38}px`;
 }
 
 const main = (): void => {
