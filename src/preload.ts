@@ -12,10 +12,19 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
     addChannel: ( channel: string ) => {
         const channels: Array<string> = <Array<string>>AppStore.store.get('channels');
         if ( channels && channels.length > 0 ) {
-            channels.push( channel );
-            AppStore.store.set('channels', channels );
+            if( !channels.includes( channel ) ) {
+                channels.push( channel );
+                AppStore.store.set('channels', channels );
+            }
         } else {
             AppStore.store.set('channels', [ channel ]);
         }
+    },
+    deleteChannel: ( channel: string ) => {
+        let list: Array<string> = <Array<string>>AppStore.store.get('channels');
+
+        console.log('Channel: ', channel);
+        list = list.filter(( item ) => item !== channel);
+        AppStore.store.set('channels', list);
     }
 });

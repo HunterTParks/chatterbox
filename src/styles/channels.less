@@ -21,8 +21,45 @@
             border-radius: 10px;
         }
 
+        // <ul id="channels-list">
+        //     <li class="channel" id="channel-1">
+        //       <div class="channel-name"></div>
+        //       <div class="buttons">
+        //         <div class="delete-button">
+        //           <button channel="channel-1">Delete</button>
+        //         </div>
+        //       </div>
+        //     </li>
+        //     <!-- List will be filled based on the App Store -->
+        //   </ul>
+
         li {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
             height: (200px / 5);
+
+            .buttons {
+                button {
+                    height: 32px;
+                    width: 75px;
+                    border-radius: 10px;
+                    background: none;
+                    border: 1px solid @mono-1;
+                    color: @mono-1;
+                    font-size: 16px;
+                    transition: 0.2s;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: @mono-1;
+                        color: @syntax-bg-offset;
+                    }
+                }
+            }
 
             &:nth-child(odd) {
                 background-color: @syntax-bg-offset;

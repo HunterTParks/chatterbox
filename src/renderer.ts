@@ -72,6 +72,25 @@ const registerEvents = () => {
         }
 
         fillChannelList();
+        registerChannelLiEvents();
+    });
+
+    registerChannelLiEvents();
+}
+
+const registerChannelLiEvents = () => {
+    const channelsLiItems = document.querySelectorAll('#channels-list li.channel .delete-button button');
+
+    channelsLiItems.forEach(( item: HTMLButtonElement ) => {
+        item.addEventListener('click', () => {
+            const id = item.getAttribute('channel');
+            const element: HTMLElement = document.getElementById(id);
+            const key: string  = element.querySelector('.channel-name').innerHTML;
+
+            window.chatterBoxAPI.deleteChannel( key );
+            fillChannelList();
+            registerChannelLiEvents();
+        });
     });
 }
 
@@ -89,6 +108,33 @@ const fillOutFields = () => {
 }
 
 const fillChannelList = () => {
+    const generateListItem = ( index: number ) => {
+        const li: HTMLLIElement = document.createElement('li');
+        li.setAttribute('class', 'channel');
+        li.setAttribute('id', `channel-${index}`);
+        return li;
+    }
+    const generateTitleElement = ( item: string ) => {
+        const div: HTMLDivElement = document.createElement('div');
+        div.setAttribute('class', 'channel-name');
+        div.appendChild(document.createTextNode(item));
+        return div;
+    }
+    const generateButtons = ( index: number ) => {
+        const div: HTMLDivElement = document.createElement('div');
+        div.setAttribute('class', 'buttons');
+        const innerDiv: HTMLDivElement = document.createElement('div');
+        innerDiv.setAttribute('class', 'delete-button');
+        const button: HTMLButtonElement = document.createElement('button');
+        button.setAttribute('channel', `channel-${index}`);
+        button.appendChild(document.createTextNode('Delete'));
+
+        innerDiv.appendChild(button);
+        div.appendChild(innerDiv);
+
+        return div;
+    }
+
     const channelList: HTMLUListElement = <HTMLUListElement>document.getElementById('channels-list');
     const channels: Array<string> = window.chatterBoxAPI.getChannels();
 
@@ -96,10 +142,9 @@ const fillChannelList = () => {
 
     if( channels && channels.length > 0) {
         channels.forEach(( item: string, index: number ) => {
-            const li: HTMLLIElement = document.createElement('li');
-            li.setAttribute('class', 'channel');
-            li.setAttribute('id', `channel-${index}`);
-            li.appendChild(document.createTextNode(item));
+            const li = generateListItem( index );
+            li.appendChild(generateTitleElement( item ));
+            li.appendChild(generateButtons( index ));
             
             channelList.appendChild(li); 
         });
@@ -116,8 +161,8 @@ const setHeightContext = () => {
 const main = (): void => {
     const mainContent = document.getElementById('main');
     const loadingIcon = document.getElementById('loading');
-    registerEvents();
     fillOutFields();
+    registerEvents();
     
     console.log('👋 This message is being logged by "renderer.js", included via webpack');
     window.chatterBoxAPI.subscribeChat();
