@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
+import robot from 'robotjs';
 import { ChatSubscriberFactory } from './components';
 import { AppStore } from './store';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,6 +41,7 @@ const createMainWindow = (): void => {
 app.on('ready', () => {
   initialize();
   createMainWindow();
+  console.log('App Path: ', app.getPath('userData'));
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -64,6 +66,13 @@ ipcMain.handle('chatSubscribe', ( event, ...args ) => {
   console.log('AppStore: ', AppStore);
   console.log('Event: ', event);
   console.log('Args: ', args);
+});
+
+ipcMain.handle('receiveCommand', ( event, ...args ) => {
+  console.log('Arguments: ', args);
+  if ( args && args.length > 0 ) {
+    robot.keyTap(args[0]);
+  }
 });
 
 // In this file you can include the rest of your app's specific main process

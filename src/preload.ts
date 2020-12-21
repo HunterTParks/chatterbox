@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcMain, ipcRenderer } from 'electron';
 import { AppStore } from './store';
 import { ChatSubscriberFactory } from './components';
 
@@ -56,5 +56,38 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
             AppStore.store.set('chatCount', chats.length);
         }
     },
-    getChatLogs: () => AppStore.store.get('chats')
+    getChatLogs: () => AppStore.store.get('chats'),
+    isActionsEnabled: () => AppStore.store.get('actionsEnabled'),
+    toggleActions: () => {
+        const isEnabled: boolean = <boolean>AppStore.store.get('actionsEnabled');
+        AppStore.store.set('actionsEnabled', !isEnabled);
+    },
+    addKeyMapping: ( newKeyMapping: Record<string, string> ) => {
+        const keyMappings: Array<Record<string, unknown>> = <Array<Record<string, unknown>>>AppStore.store.get('keyMappings');
+        
+        if( keyMappings && keyMappings.length > 0 ) {
+            let foundMatch = false;
+            keyMappings.forEach( ( key: Record<string, unknown> ) => {
+                if( key.key == newKeyMapping.key )
+                    foundMatch = true;
+            });
+
+            if( !foundMatch ) {
+                keyMappings.push( newKeyMapping );
+                AppStore.store.set('keyMappings', keyMappings);
+            }
+        } else {
+            AppStore.store.set('keyMappings', [ newKeyMapping ]);
+        }
+    },
+    getKeyMappings: () => AppStore.store.get('keyMappings'),
+    deleteKeyMapping: ( key: string ) => {
+        console.log('Key: ', key);
+        let list: Array<Record<string, unknown>> = <Array<Record<string, unknown>>>AppStore.store.get('keyMappings');
+        console.log('List: ', list);
+
+        list = list.filter(( item: Record<string, unknown> ) => item.key !== key);
+        AppStore.store.set('keyMappings', list);
+    },
+    sendCommand: ( key: string ) => ipcRenderer.invoke('receiveCommand', key)
 });

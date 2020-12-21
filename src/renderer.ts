@@ -16,6 +16,7 @@ const registerEvents = () => {
     const credentialsForm = document.getElementById('credentials-form');
     const channelsForm = document.getElementById('channels-form');
     const toggleOn = document.querySelectorAll('.toggle-group');
+    const keyMappingForm  = document.getElementById('key-mapping-form');
     
     window.addEventListener('resize', () => {
         setHeightContext();
@@ -81,10 +82,31 @@ const registerEvents = () => {
             toggle.classList.toggle('on');
 
             if( item.id === 'toggle-chats' ) enableChat();
+            if( item.id === 'toggle-actions' ) toggleActions();
         });
     });
 
+    keyMappingForm.addEventListener('submit', ( e ) => {
+        e.preventDefault();
+
+        const aliasInput: HTMLInputElement = <HTMLInputElement>document.getElementById('key-alias-input');
+        const commandInput: HTMLInputElement = <HTMLInputElement>document.getElementById('key-command-input');
+
+        if( 
+            aliasInput && aliasInput !== undefined &&
+            commandInput && commandInput !== undefined    
+        ) {
+            window.chatterBoxAPI.addKeyMapping({ "key": aliasInput.value, "action": commandInput.value });
+            aliasInput.value = '';
+            commandInput.value = '';
+        }
+
+        fillKeyMappingList();
+        registerKeyMappingLiEvents();
+    })
+
     registerChannelLiEvents();
+    registerKeyMappingLiEvents();
 }
 
 const registerChannelLiEvents = () => {
@@ -103,6 +125,22 @@ const registerChannelLiEvents = () => {
     });
 }
 
+const registerKeyMappingLiEvents = () => {
+    const keyMappingLiItems = document.querySelectorAll('#key-mapping-list li.key .delete-button button');
+
+    keyMappingLiItems.forEach(( item: HTMLButtonElement ) => {
+        item.addEventListener('click', () => {
+            const id = item.getAttribute('key');
+            const element: HTMLElement = document.getElementById(id);
+            const key: string = element.querySelector('.key-name').innerHTML;
+
+            window.chatterBoxAPI.deleteKeyMapping( key );
+            fillKeyMappingList();
+            registerKeyMappingLiEvents();
+        })
+    })
+}
+
 const fillOutFields = () => {
     const username: HTMLInputElement = <HTMLInputElement>document.getElementById('username');
     const password: HTMLInputElement = <HTMLInputElement>document.getElementById('password');
@@ -114,6 +152,7 @@ const fillOutFields = () => {
         password.value = setPassword;
 
     fillChannelList();
+    fillKeyMappingList();
     fillChatLogs();
     fillChatCount();
 }
@@ -164,6 +203,53 @@ const fillChannelList = () => {
     }
 }
 
+const fillKeyMappingList = () => {
+    const generateListItem = ( index: number ) => {
+        const li: HTMLLIElement = document.createElement('li');
+        li.setAttribute('class', 'key');
+        li.setAttribute('id', `key-${index}`);
+        return li;
+    }
+    const generateTitleElement = ( item: string ) => {
+        const div: HTMLDivElement = document.createElement('div');
+        div.setAttribute('class', 'key-name');
+        div.appendChild(document.createTextNode(item));
+        return div;
+    }
+    const generateButtons = ( index: number ) => {
+        const div: HTMLDivElement = document.createElement('div');
+        div.setAttribute('class', 'buttons');
+        const innerDiv: HTMLDivElement = document.createElement('div');
+        innerDiv.setAttribute('class', 'delete-button');
+        const button: HTMLButtonElement = document.createElement('button');
+        button.setAttribute('key', `key-${index}`);
+        button.appendChild(document.createTextNode('Delete'));
+
+        innerDiv.appendChild(button);
+        div.appendChild(innerDiv);
+
+        return div;
+    }
+
+    const keyMappingList: HTMLUListElement = <HTMLUListElement>document.getElementById('key-mapping-list');
+    const keyMappings: Array<Record<string, string>> = window.chatterBoxAPI.getKeyMappings();
+
+    keyMappingList.innerHTML = '';
+
+    if( keyMappings && keyMappings.length > 0) {
+        keyMappings.forEach(( item: Record<string, string>, index: number ) => {
+            const li = generateListItem( index );
+            li.appendChild(generateTitleElement( item.key ));
+            li.appendChild(generateTitleElement( item.action ))
+            li.appendChild(generateButtons( index ));
+            
+            keyMappingList.appendChild(li); 
+        });
+    } else {
+        console.log('Key Mappings not found');
+    }
+}
+
 const fillChatLogs = () => {
     const chats: Array<string> = window.chatterBoxAPI.getChatLogs();
 
@@ -194,6 +280,10 @@ const enableChat = () => {
     const client = window.chatterBoxAPI.getChatSubscriberClient( onMessageHandler, onConnectionHandler );
 }
 
+const toggleActions = () => {
+    window.chatterBoxAPI.toggleActions();
+}
+
 const onConnectionHandler = ( addr: unknown, port: unknown ) => {
     console.log(`* Connected to ${addr}:${port}`);
 }
@@ -208,6 +298,16 @@ const onMessageHandler = ( target: unknown, context: Record<string, unknown>, ms
     window.chatterBoxAPI.addChat( generatedMsg );
     addSingleChatToLogs( generatedMsg );
     fillChatCount();
+
+    if ( window.chatterBoxAPI.isActionsEnabled ) {
+        const keymappings = window.chatterBoxAPI.getKeyMapping();
+
+        keymappings.forEach( ( key: string ) => {
+            if( key === generatedMsg ) {
+                window.chatterBoxAPi.sendCommand( key );
+            }
+        });
+    }
 };
 
 const addSingleChatToLogs = ( msg: string ) => {

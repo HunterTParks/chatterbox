@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
-
   </head>
   <body class="default">
     <div id="loading" class="loading-screen">
@@ -19,6 +18,7 @@
           <div id="nav-credentials" class="sidebar-item">Credentials</div>
           <div id="nav-channels" class="sidebar-item">Channels</div>
           <div id="nav-chat" class="sidebar-item">Chat Logs</div>
+          <div id="nav-key-mapping" class="sidebar-item">Key Mappings</div>
         </div>
         <div id="sidebar-toggle">
           <div class="sidebar-toggle-icon">
@@ -92,6 +92,44 @@
           <div class="chat-list">
             <textarea id="chat-logs" readonly></textarea>
           </div>
+        </div>
+        <div id="key-mapping" class="section hidden">
+          <div class="section-title">
+            <div class="form-title">Key Mapping</div>
+          </div>
+          <div class="key-mapping-list-container">
+            <ul id="key-mapping-list">
+              <li class="key" id="key-1">
+                <div class="alias-name">f</div>
+                <div class="command-name">f</div>
+                <div class="buttons">
+                  <div class="delete-button">
+                    <button channel="channel-1">Delete</button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <form id="key-mapping-form">
+            <div class="section-title">
+              <div class="form-title">Add Key Mapping</div>
+            </div>
+            <div class="input-container">
+              <div class="input-text">
+                <label for="alias">Key Alias</label>
+                <input type="text" name="alias" id="key-alias-input" required />
+              </div>
+            </div>
+            <div class="input-container">
+              <div class="input-text">
+                <label for="command">Key Command</label>
+                <input type="text" name="command" id="key-command-input" required />
+              </div>
+            </div>
+            <div class="form-submission">
+              <button type="submit">Add</button>
+            </div>
+          </form>
         </div>
       </div>
       <div class="footer">

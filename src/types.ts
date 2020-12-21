@@ -73,6 +73,20 @@ const StoreSchema: Record<string, unknown> = {
     actionCount: {
         type: Number,
         default: 0
+    },
+    keyMapping: {
+        type: 'array',
+        items: {
+            type: 'object',
+            properties: {
+                key: { type: 'string' },
+                action: { type: 'string' }
+            }
+        }
+    },
+    actionsEnabled: {
+        type: 'boolean',
+        default: false
     }
 }
 
