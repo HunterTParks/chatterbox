@@ -55,9 +55,12 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
     },
     getChatLogs: () => AppStore.store.get('chats'),
     isActionsEnabled: () => AppStore.store.get('actionsEnabled'),
-    toggleActions: () => {
-        const isEnabled: boolean = <boolean>AppStore.store.get('actionsEnabled');
-        AppStore.store.set('actionsEnabled', !isEnabled);
+    toggleActions: ( setValue: boolean = undefined ) => {
+        const newValue = setValue ? 
+            setValue :
+            !(<boolean>AppStore.store.get('actionsEnabled'));
+
+        AppStore.store.set('actionsEnabled', newValue);
     },
     addKeyMapping: ( newKeyMapping: Record<string, string> ) => {
         const keyMappings: Array<Record<string, unknown>> = <Array<Record<string, unknown>>>AppStore.store.get('keyMappings');

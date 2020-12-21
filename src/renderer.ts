@@ -287,6 +287,7 @@ const onConnectionHandler = ( addr: unknown, port: unknown ) => {
 }
 
 const onMessageHandler = ( target: unknown, context: Record<string, unknown>, msg: string, self: unknown ) => {
+    console.log('Message handler!');
     if ( self ) return;
 
     const commandName = msg.trim();
@@ -296,11 +297,15 @@ const onMessageHandler = ( target: unknown, context: Record<string, unknown>, ms
     addSingleChatToLogs( generatedMsg );
     fillChatCount();
 
-    if ( window.chatterBoxAPI.isActionsEnabled ) {
-        const keymappings = window.chatterBoxAPI.getKeyMapping();
+    if ( window.chatterBoxAPI.isActionsEnabled() ) {
+        console.log('Is Enabled!');
+        const keymappings = window.chatterBoxAPI.getKeyMappings();
 
-        keymappings.forEach( ( key: string ) => {
-            if( key === generatedMsg ) {
+        keymappings.forEach( ( key: Record<string, unknown>, index: number ) => {
+            console.log('Index: ', index);
+            console.log('Key: ', key);
+            if( key.key === generatedMsg ) {
+                console.log('Sending Input!');
                 window.chatterBoxAPi.sendCommand( key );
             }
         });
@@ -318,9 +323,12 @@ const setChatCountUI = ( amount: number ) => {
     countNode.innerText = `${amount}`;
 }
 
+const disableActions = () => window.chatterBoxAPI.toggleActions(false);
+
 const main = (): void => {
     const mainContent = document.getElementById('main');
     const loadingIcon = document.getElementById('loading');
+    disableActions();
     fillOutFields();
     registerEvents();
     
