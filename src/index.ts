@@ -62,8 +62,10 @@ app.on('activate', () => {
 });
 
 ipcMain.handle('receiveCommand', ( event, ...args ) => {
-  console.log('Arguments: ', args);
+  console.log('Command received!');
   if ( args && args.length > 0 ) {
+    console.log('Executing command...');
+    console.log('argument: ', args[0]);
     robot.keyTap(args[0]);
   }
 });

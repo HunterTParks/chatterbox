@@ -56,7 +56,7 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
     getChatLogs: () => AppStore.store.get('chats'),
     isActionsEnabled: () => AppStore.store.get('actionsEnabled'),
     toggleActions: ( setValue: boolean = undefined ) => {
-        const newValue = setValue ? 
+        const newValue = setValue !== undefined ? 
             setValue :
             !(<boolean>AppStore.store.get('actionsEnabled'));
 
@@ -87,5 +87,5 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
         list = list.filter(( item: Record<string, unknown> ) => item.key !== key);
         AppStore.store.set('keyMappings', list);
     },
-    sendCommand: ( key: string ) => ipcRenderer.invoke('receiveCommand', key)
+    sendCommand: ( keyMap: string ) => ipcRenderer.invoke('receiveCommand', keyMap)
 });

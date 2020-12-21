@@ -292,6 +292,7 @@ const onMessageHandler = ( target: unknown, context: Record<string, unknown>, ms
 
     const commandName = msg.trim();
     const date = new Date();
+    console.log('Context: ', context);
     const generatedMsg = `${context['display-name']} | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} | ${commandName}`
     window.chatterBoxAPI.addChat( generatedMsg );
     addSingleChatToLogs( generatedMsg );
@@ -304,9 +305,10 @@ const onMessageHandler = ( target: unknown, context: Record<string, unknown>, ms
         keymappings.forEach( ( key: Record<string, unknown>, index: number ) => {
             console.log('Index: ', index);
             console.log('Key: ', key);
-            if( key.key === generatedMsg ) {
+            console.log('Generated Message', generatedMsg);
+            if( key.key === commandName ) {
                 console.log('Sending Input!');
-                window.chatterBoxAPi.sendCommand( key );
+                window.chatterBoxAPI.sendCommand( key.action );
             }
         });
     }
