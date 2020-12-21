@@ -1,4 +1,4 @@
-import { contextBridge, ipcMain, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 import { AppStore } from './store';
 import { ChatSubscriberFactory } from './components';
 
@@ -24,14 +24,11 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
     deleteChannel: ( channel: string ) => {
         let list: Array<string> = <Array<string>>AppStore.store.get('channels');
 
-        console.log('Channel: ', channel);
         list = list.filter(( item ) => item !== channel);
         AppStore.store.set('channels', list);
     },
     getChatSubscriberClient: ( onMessageHandler: () => void, onConnectionHandler: () => void ) => { 
         const client = ChatSubscriberFactory.createClient( onMessageHandler, onConnectionHandler );
-        console.log('Client from preload: ', client);
-        client.on('message', () => console.log('testing'));
         return client;
     },
     resetCount: () => AppStore.store.set({
@@ -82,9 +79,7 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
     },
     getKeyMappings: () => AppStore.store.get('keyMappings'),
     deleteKeyMapping: ( key: string ) => {
-        console.log('Key: ', key);
         let list: Array<Record<string, unknown>> = <Array<Record<string, unknown>>>AppStore.store.get('keyMappings');
-        console.log('List: ', list);
 
         list = list.filter(( item: Record<string, unknown> ) => item.key !== key);
         AppStore.store.set('keyMappings', list);

@@ -61,13 +61,6 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.handle('chatSubscribe', ( event, ...args ) => {
-  console.log('ChatSubscriberFactory: ', ChatSubscriberFactory);
-  console.log('AppStore: ', AppStore);
-  console.log('Event: ', event);
-  console.log('Args: ', args);
-});
-
 ipcMain.handle('receiveCommand', ( event, ...args ) => {
   console.log('Arguments: ', args);
   if ( args && args.length > 0 ) {

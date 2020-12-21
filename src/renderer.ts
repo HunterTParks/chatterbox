@@ -59,7 +59,6 @@ const registerEvents = () => {
             password.value && password.value !== undefined
         ) {
             window.chatterBoxAPI.setCredentials(username.value, password.value);
-            console.log('values set');
         }
     });
 
@@ -262,7 +261,6 @@ const fillChatLogs = () => {
 
 const fillChatCount = () => {
     const chatCount: number = window.chatterBoxAPI.getChatCount();
-    console.log('Chat count: ', chatCount);
 
     if ( chatCount && chatCount != undefined ) {
         setChatCountUI( chatCount );
@@ -293,7 +291,6 @@ const onMessageHandler = ( target: unknown, context: Record<string, unknown>, ms
 
     const commandName = msg.trim();
     const date = new Date();
-    console.log('Context : ', context);
     const generatedMsg = `${context['display-name']} | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} | ${commandName}`
     window.chatterBoxAPI.addChat( generatedMsg );
     addSingleChatToLogs( generatedMsg );
@@ -326,9 +323,6 @@ const main = (): void => {
     const loadingIcon = document.getElementById('loading');
     fillOutFields();
     registerEvents();
-    
-    console.log('👋 This message is being logged by "renderer.js", included via webpack');
-    window.chatterBoxAPI.subscribeChat();
     
     setTimeout(() => {
         loadingIcon.classList.add('hidden');
