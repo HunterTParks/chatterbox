@@ -9,9 +9,16 @@
     height: 36px;
     background-color: @syntax-guide;
 
-    > .total-chats-container {
+    > .total-item-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
         padding-left: 20px;
         width: 20%;
+
+        > .total-item-label {
+            margin-right: 5px;
+        }
     }
 
     > .total-actions-container {

@@ -50,6 +50,10 @@ const StoreSchema: Record<string, unknown> = {
         maxItems: 20,
         minItems: 0
     },
+    chats: {
+        type: 'array',
+        minItems: 0
+    },
     theme: {
         type: 'string',
         default: 'default'
@@ -61,6 +65,14 @@ const StoreSchema: Record<string, unknown> = {
     windowHeight: {
         type: Number,
         default: 600
+    },
+    chatCount: {
+        type: Number,
+        default: 0
+    },
+    actionCount: {
+        type: Number,
+        default: 0
     }
 }
 

@@ -79,6 +79,8 @@ const registerEvents = () => {
         item.addEventListener('click', () => {
             const toggle = item.querySelector('.button-on-container');
             toggle.classList.toggle('on');
+
+            if( item.id === 'toggle-chats' ) enableChat();
         });
     });
 
@@ -112,6 +114,8 @@ const fillOutFields = () => {
         password.value = setPassword;
 
     fillChannelList();
+    fillChatLogs();
+    fillChatCount();
 }
 
 const fillChannelList = () => {
@@ -160,9 +164,61 @@ const fillChannelList = () => {
     }
 }
 
+const fillChatLogs = () => {
+    const chats: Array<string> = window.chatterBoxAPI.getChatLogs();
+
+    if ( chats && chats.length > 0 ) {
+        chats.forEach( ( chat: string ) => {
+            addSingleChatToLogs( chat + '\n' );
+        });
+    }
+}
+
+const fillChatCount = () => {
+    const chatCount: number = window.chatterBoxAPI.getChatCount();
+    console.log('Chat count: ', chatCount);
+
+    if ( chatCount && chatCount != undefined ) {
+        setChatCountUI( chatCount );
+    }
+}
+
 const setHeightContext = () => {
     const sidebar = document.getElementById('sidebar-list');
     sidebar.style.height = `${window.innerHeight - 38}px`;
+}
+
+const enableChat = () => {
+    window.chatterBoxAPI.resetCount();
+
+    const client = window.chatterBoxAPI.getChatSubscriberClient( onMessageHandler, onConnectionHandler );
+}
+
+const onConnectionHandler = ( addr: unknown, port: unknown ) => {
+    console.log(`* Connected to ${addr}:${port}`);
+}
+
+const onMessageHandler = ( target: unknown, context: Record<string, unknown>, msg: string, self: unknown ) => {
+    if ( self ) return;
+
+    const commandName = msg.trim();
+    const date = new Date();
+    console.log('Context : ', context);
+    const generatedMsg = `${context['display-name']} | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} | ${commandName}`
+    window.chatterBoxAPI.addChat( generatedMsg );
+    addSingleChatToLogs( generatedMsg );
+    fillChatCount();
+};
+
+const addSingleChatToLogs = ( msg: string ) => {
+    const textarea = document.getElementById('chat-logs');
+    textarea.appendChild(document.createTextNode(msg + '\n'));
+    textarea.scrollTop = textarea.scrollHeight;
+}
+
+const setChatCountUI = ( amount: number ) => {
+    const countNode = document.getElementById('total-chats');
+    countNode.innerText = `${amount}`;
 }
 
 const main = (): void => {

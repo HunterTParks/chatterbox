@@ -4,8 +4,10 @@ import { AppStore } from '../store';
 import * as T from '../types';
 
 class ChatSubscriberFactory {
+    onMessageHander: () => void;
+    onConnectionHandler: () => void;
 
-    createClient() {
+    createClient( onMessageHandler: () => void, onConnectionHandler: () => void ) {
         if( !AppStore.validate() )
             console.error('Cannot connect -- one or more of the authentication fields is empty');
 
@@ -20,6 +22,10 @@ class ChatSubscriberFactory {
         // Create a client with our options
         // TODO: Fix 'unknown' type cast
         const client: tmi.Client = tmi.client(<unknown>ops);
+        
+        client.on('message', onMessageHandler);
+        client.on('connected', onConnectionHandler);
+        client.connect();
 
         return client;
     }
