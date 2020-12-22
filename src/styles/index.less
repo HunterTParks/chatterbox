@@ -30,6 +30,58 @@ to-section {
     }
 }
 
+form {
+    position: relative;
+
+    > .input-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        width: 400px;
+        height: 36px;
+        border: 1px solid white;
+        border-radius: 5px;
+        background-color: rgb(245, 241, 241);
+        color: @syntax-bg;
+        margin-bottom: 20px;
+
+        > .input-text {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: center;
+            font-weight: 600;
+            width: 100%;
+            overflow: hidden;
+
+            > label {
+                width: 26%;
+                background-color: @mono-1;
+                height: 150%;
+                text-align: center;
+                padding-top: 36px;
+            }
+
+            > input {
+                width: 73%;
+                height: 36px;
+                background-color: rgb(245, 241, 241);
+                border: 0;
+                font-size: 24px;
+            }
+        }
+
+    }
+
+    > .form-submission {
+        float: right;
+        
+        > button {
+            .submission-button();
+        }
+    }
+} 
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     
@@ -139,62 +191,10 @@ body {
     .section {
         .section-title {
             .form-title {
-                font-size: 28px;
+                font-size: @title-font-size;
                 padding: 0 0 0.8rem 0;
             }
         }
-        
-        form {
-            position: relative;
-        
-            > .input-container {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                width: 400px;
-                height: 36px;
-                border: 1px solid white;
-                border-radius: 5px;
-                background-color: rgb(245, 241, 241);
-                color: @syntax-bg;
-                margin-bottom: 20px;
-        
-                > .input-text {
-                    display: flex;
-                    flex-direction: row;
-                    flex-wrap: nowrap;
-                    align-items: center;
-                    font-weight: 600;
-                    width: 100%;
-                    overflow: hidden;
-        
-                    > label {
-                        width: 26%;
-                        background-color: @mono-1;
-                        height: 150%;
-                        text-align: center;
-                        padding-top: 36px;
-                    }
-        
-                    > input {
-                        width: 73%;
-                        height: 36px;
-                        background-color: rgb(245, 241, 241);
-                        border: 0;
-                        font-size: 24px;
-                    }
-                }
-        
-            }
-        
-            > .form-submission {
-                float: right;
-                
-                > button {
-                    .submission-button();
-                }
-            }
-        } 
 
         li.varied-list-item {
             display: flex;
@@ -226,6 +226,56 @@ body {
 
             &:nth-child(odd) {
                 background-color: @syntax-bg-offset;
+            }
+        }
+    }
+
+    #modal {
+        display: none;
+
+        &.open {
+            top: 0px;
+            display: block;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            
+            #background {
+                top: 0;
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                filter: opacity(70%);
+                background-color: black;
+                z-index: 4;
+            }
+    
+            .modal-popup {
+                display: table;
+                position: relative;
+                margin: 100px auto;
+                width: 70%;
+                height: 400px;
+                padding: 20px;
+                background-color: @syntax-bg;
+                z-index: 5;
+    
+                .modal-popup-title {
+                    font-size: @title-font-size;
+                    margin-bottom: 20px;
+                }
+            }
+
+            #exit-modal {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                padding: 5px 10px;
+                cursor: pointer;
+
+                &:hover {
+                    font-weight: 600;
+                }
             }
         }
     }

@@ -19,7 +19,8 @@ const registerEvents = () => {
     const keyMappingForm  = document.getElementById('key-mapping-form');
     const externalLinks = document.querySelectorAll('to-browser');
     const internalLinks = document.querySelectorAll('to-section');
-    
+    const modal = document.getElementById('modal');
+
     window.addEventListener('resize', () => {
         setHeightContext();
     });
@@ -119,6 +120,20 @@ const registerEvents = () => {
 
             nav.click();
         });
+    });
+
+    modal.addEventListener('fire', () => {
+        modal.classList.toggle('open');
+    });
+
+    modal.addEventListener('click', ( e ) => {
+        const clickedElementId = (<HTMLElement>e.target).getAttribute('id');
+        if( 
+            clickedElementId === 'background' ||
+            clickedElementId === 'exit-modal'
+        ) {
+            modal.classList.toggle('open');
+        }
     });
 
     registerChannelLiEvents();
