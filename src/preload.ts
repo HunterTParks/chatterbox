@@ -87,5 +87,6 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
         list = list.filter(( item: Record<string, unknown> ) => item.key !== key);
         AppStore.store.set('keyMappings', list);
     },
-    sendCommand: ( keyMap: string ) => ipcRenderer.invoke('receiveCommand', keyMap)
+    sendCommand: ( keyMap: string ) => ipcRenderer.invoke('receiveCommand', keyMap),
+    openExternal: ( link: string ) => ipcRenderer.invoke('openExternal', link)
 });

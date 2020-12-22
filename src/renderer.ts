@@ -17,6 +17,8 @@ const registerEvents = () => {
     const channelsForm = document.getElementById('channels-form');
     const toggleOn = document.querySelectorAll('.toggle-group');
     const keyMappingForm  = document.getElementById('key-mapping-form');
+    const externalLinks = document.querySelectorAll('to-browser');
+    const internalLinks = document.querySelectorAll('to-section');
     
     window.addEventListener('resize', () => {
         setHeightContext();
@@ -104,6 +106,21 @@ const registerEvents = () => {
         registerKeyMappingLiEvents();
     })
 
+    externalLinks.forEach(( item: HTMLElement ) => {
+        item.addEventListener('click', ( e ) => {
+            window.chatterBoxAPI.openExternal( item.attributes.getNamedItem('link').value );
+        });
+    });
+
+    internalLinks.forEach(( item: HTMLElement ) => {
+        item.addEventListener('click', () => {
+            let link = item.attributes.getNamedItem('goto').value;
+            const nav = document.getElementById(link);
+
+            nav.click();
+        });
+    });
+
     registerChannelLiEvents();
     registerKeyMappingLiEvents();
 }
@@ -159,7 +176,7 @@ const fillOutFields = () => {
 const fillChannelList = () => {
     const generateListItem = ( index: number ) => {
         const li: HTMLLIElement = document.createElement('li');
-        li.setAttribute('class', 'channel');
+        li.setAttribute('class', 'channel varied-list-item');
         li.setAttribute('id', `channel-${index}`);
         return li;
     }
@@ -205,7 +222,7 @@ const fillChannelList = () => {
 const fillKeyMappingList = () => {
     const generateListItem = ( index: number ) => {
         const li: HTMLLIElement = document.createElement('li');
-        li.setAttribute('class', 'key');
+        li.setAttribute('class', 'key varied-list-item');
         li.setAttribute('id', `key-${index}`);
         return li;
     }

@@ -1,8 +1,9 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'path';
 import robot from 'robotjs';
 import { ChatSubscriberFactory } from './components';
 import { AppStore } from './store';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 
@@ -13,7 +14,8 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 const initialize = (): void => {
   AppStore.store.set('windowWidth', 800);
-  AppStore.store.set('windowHeight', 600);
+  AppStore.store.set('windowHeight', 725);
+  AppStore.store.set('chats', []);
 }
 
 const createMainWindow = (): void => {
@@ -21,6 +23,8 @@ const createMainWindow = (): void => {
   const mainWindow = new BrowserWindow({
     height: <number>AppStore.store.get('windowHeight'),
     width: <number>AppStore.store.get('windowWidth'),
+    minHeight: 725,
+    title: 'ChatterBox',
     webPreferences: {
       enableRemoteModule: true,
       contextIsolation: true,
@@ -30,9 +34,6 @@ const createMainWindow = (): void => {
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
@@ -41,7 +42,6 @@ const createMainWindow = (): void => {
 app.on('ready', () => {
   initialize();
   createMainWindow();
-  console.log('App Path: ', app.getPath('userData'));
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -62,13 +62,12 @@ app.on('activate', () => {
 });
 
 ipcMain.handle('receiveCommand', ( event, ...args ) => {
-  console.log('Command received!');
   if ( args && args.length > 0 ) {
-    console.log('Executing command...');
-    console.log('argument: ', args[0]);
     robot.keyTap(args[0]);
   }
 });
+
+ipcMain.handle('openExternal', ( event, ...args ) => shell.openExternal( args[0] ));
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
