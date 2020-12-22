@@ -15,7 +15,15 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 const initialize = (): void => {
   AppStore.store.set('windowWidth', 800);
   AppStore.store.set('windowHeight', 725);
-  AppStore.store.set('chats', []);
+}
+
+const shutdown = (): void => {
+  AppStore.store.set({
+    'chats': [],
+    'actionsEnabled': false,
+    'chatCount': 0,
+    'actionCount': 0
+  });
 }
 
 const createMainWindow = (): void => {
@@ -49,6 +57,7 @@ app.on('ready', () => {
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    shutdown();
     app.quit();
   }
 });
