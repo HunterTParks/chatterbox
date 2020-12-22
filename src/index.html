@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>ChatterBox</title>
   </head>
   <body class="default">
     <div id="loading" class="loading-screen">
@@ -14,7 +14,7 @@
     <div id="main" class="hidden">
       <div id="sidebar-container">
         <div id="sidebar-list">
-          <div id="nav-introduction" class="sidebar-item selected">Introduction</div>
+          <div id="nav-instructions" class="sidebar-item selected">Instructions</div>
           <div id="nav-credentials" class="sidebar-item">Credentials</div>
           <div id="nav-channels" class="sidebar-item">Channels</div>
           <div id="nav-chat" class="sidebar-item">Chat Logs</div>
@@ -27,9 +27,39 @@
         </div>
       </div>
       <div class="content">
-        <div id="introduction" class="active">
-          <h1>💖 Hello World!</h1>
-          <p>Welcome to your Electron application.</p>
+        <div id="instructions" class="section active">
+          <div class="section-title">
+            <div class="form-title">Instructions</div>
+          </div>
+          <div class="instruction-container">
+            <p>This app will allow your viewers on Twitch to interact with your machine using the key bindings set by you.</p>
+            <br />
+            <p><span class="notice">Please, for heaven's sake, do not set very many values to keys. Who knows who your viewers are.</span></p>
+            <br />
+            <p>How to use this software:</p>
+            <ol>
+              <li>Create / use a separate Twitch Account dedicated to using a bot. You can register for a twitch account here: <to-browser class="open-in-browser" link="https://www.twitch.tv/signup">Twitch Registration</to-browser></li>
+              <li>Generate OAuth Token - A couple of programmers have created this twitch app that allows you to generate a "password" needed to authenticate with Twitch. You will need to use the account you just created in step 1. You can find that here: <to-browser link="https://twitchapps.com/tmi/">TMI OAuth Password Generator</to-browser></li>
+              <li>Take the Username of the account you created from step 1 and the password you generated from step 2 and put that into the <to-section goto="av-credentials">Credentials section</to-section>. Make sure you save them.</li>
+              <li>Add any twitch channels you would like your twitch bot to read. You can add and remove any channels by going to the <to-section goto="nav-channels">Channels section</to-section>.</li>
+              <li>
+                Add any Key Mappings that are fit for your game. You can do this in the <to-section goto="nav-key-mapping">Key Mapping section</to-section>. 
+                <br />
+                <br />
+                The Key Alias</strong> field is the letter or phrase you want your chat to give you. The Key Command</strong> field is the key you would like the key alias to register to. 
+                <br />
+                <br />
+                You can find the specific commands that you can use <to-browser link="https://robotjs.io/docs/syntax#keys">on the RobotJS API docs</to-browser>.
+              </li>
+              <li>
+                Enable the chat bot by clicking on the Toggleable Enable Chats switch in the footer of this application.
+                <br />
+                <br />
+                As an optional step, I recommend viewing the <to-section goto="nav-chat">Chat Log</to-section> to make sure the bot is working correctly. You should be able to see all new messages coming in.
+              </li>
+              <li>If you have done everything correctly, when you want your viewers to take control, you can Enable Actions in the footer. If the viewers put in the correct key phrases you put in the <to-section goto="nav-key-mapping">Key Mapping section</to-section>, you should start seeing automated input.</li>
+            </ol>
+          </div>
         </div>
         <div id="credentials" class="section hidden">
           <div class="section-title">
