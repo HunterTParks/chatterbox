@@ -43,8 +43,8 @@ const shutdown = (): void => {
 const createMainWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 200,
-    width: 200,
+    height: 725,
+    width: 800,
     minHeight: 725,
     title: 'ChatterBox',
     webPreferences: {
