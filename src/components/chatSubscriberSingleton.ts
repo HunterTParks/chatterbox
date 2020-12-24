@@ -9,7 +9,6 @@ class ChatSubscriber {
 
     constructor() {
         AppStore.getClient().then(( store: any ) => {
-            console.log('Store from chatSubscriber: ', AppStore.store);
             const ops: T.TMIOptions = {
                 identity: {
                     username: store.get('username'),
@@ -35,8 +34,6 @@ class ChatSubscriber {
     }
 
     register( event: string, handler: ( ...args: unknown[] ) => void ) {
-        console.log('event: ', event);
-        console.log('Handler: ', handler);
         if( event && this.registeredEvents.includes( event ) )
             return;
 

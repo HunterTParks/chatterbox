@@ -286,11 +286,12 @@ const fillChatLogs = () => {
     const chats: Array<string> = window.chatterBoxAPI.getChatLogs();
     document.getElementById('chat-logs').innerText = '';
 
-
     if ( chats && chats.length > 0 ) {
         chats.forEach( ( chat: string ) => {
             addSingleChatToLogs( chat + '\n' );
         });
+
+        fillChatCount();
     }
 }
 
@@ -302,6 +303,14 @@ const fillChatCount = () => {
     }
 }
 
+const fillActionCount = () => {
+    const actionCount: number = window.chatterBoxAPI.getActionCount();
+
+    if ( actionCount && actionCount !== undefined ) {
+        setActionCountUI( actionCount );
+    }
+}
+
 const setHeightContext = () => {
     const sidebar = document.getElementById('sidebar-list');
     sidebar.style.height = `${window.innerHeight - 38}px`;
@@ -309,7 +318,6 @@ const setHeightContext = () => {
 
 const toggleChat = () => {
     window.chatterBoxAPI.toggleChats();
-    console.log('Connection Status: ', window.chatterBoxAPI.isChatsEnabled());
 
     if ( window.chatterBoxAPI.isChatsEnabled() ) {
         window.chatterBoxAPI.connect();
@@ -334,10 +342,19 @@ const setChatCountUI = ( amount: number ) => {
     countNode.innerText = `${amount}`;
 }
 
+const setActionCountUI = ( amount: number ) => {
+    const actionNode = document.getElementById('total-actions');
+    actionNode.innerText = `${amount}`;
+}
+
 const disableActions = () => window.chatterBoxAPI.toggleActions(false);
 
 const pollChatLogs = () => {
     setInterval(() => fillChatLogs(), 5000);
+}
+
+const pollActionsCount = () => {
+    setInterval(() => fillActionCount(), 5000);
 }
 
 const main = (): void => {
@@ -347,9 +364,9 @@ const main = (): void => {
     fillOutFields();
     registerEvents();
     pollChatLogs();
+    pollActionsCount();
     
     const loadingScreen = setInterval(() => {
-        console.log('Loading: ', window.chatterBoxAPI.isLoaded() );
         if( window.chatterBoxAPI.isLoaded() ) {
             loadingIcon.classList.add('hidden');
             mainContent.classList.remove('hidden');

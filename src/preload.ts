@@ -37,6 +37,7 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
     getChatCount: () => AppStore.store.get('chatCount'),
     getChatLogs: () => AppStore.store.get('chats'),
     isActionsEnabled: () => AppStore.store.get('actionsEnabled'),
+    getActionCount: () => AppStore.store.get('actionCount'),
     isChatsEnabled: () => AppStore.store.get('chatsEnabled'),
     toggleActions: ( setValue: boolean = undefined ) => {
         const newValue = setValue !== undefined ? 

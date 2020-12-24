@@ -16,7 +16,6 @@ class AppStore {
     constructor() {
         retrievePassword().then(( password: string ) => { 
             this.store = new Store({ ...T.StoreSchema, encryptionKey: password });
-            console.log('Store: ', this.store);
         });
     }
 

@@ -59,18 +59,15 @@ const createMainWindow = (): void => {
 };
 
 const onMessageHandler = ( target: unknown, context: Record<string, unknown>, msg: string, self: unknown ) => {
-  console.log('Message handler!');
   if ( self ) return;
 
   const commandName = msg.trim();
   const date = new Date();
-  console.log('Context: ', context);
   const generatedMsg = `${context['display-name']} | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} | ${commandName}`
   addChat( generatedMsg );
 
   if ( AppStore.store.get('actionsEnabled') ) {
       const keymappings: Array<Record<string, string>> = <Array<Record<string, string>>>AppStore.store.get('keyMappings');
-      console.log('keymappings: ', keymappings);
 
       if( keymappings && keymappings.length > 0 ) {
         keymappings.forEach( ( key: Record<string, string> ) => {
@@ -100,13 +97,14 @@ const addChat = ( msg: string ) => {
       chatCount++;
       AppStore.store.set('chatCount', chatCount);
   } else {
-      AppStore.store.set('chatCount', chats.length);
+      AppStore.store.set('chatCount', chats.length + 1);
   }
 }
 
 const sendCommand = ( keymap: string ) => {
   if ( keymap && keymap !== undefined ) {
     robot.keyTap( keymap );
+    AppStore.store.set('actionCount', <number>AppStore.store.get('actionCount') + 1);
   }
 };
 
