@@ -83,5 +83,6 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
         ipcRenderer.invoke('registerEvent', handler);
     },
     connect: () => ipcRenderer.invoke('connect'),
-    disconnect: () => ipcRenderer.invoke('disconnect')
+    disconnect: () => ipcRenderer.invoke('disconnect'),
+    isLoaded: () => AppStore.store.get('isLoaded')
 });

@@ -13,32 +13,38 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 }
 
 const initialize = (): void => {
-  AppStore.store.set({
-    'windowWidth': 800,
-    'windowHeight': 725,
-    'actionsEnabled': false,
-    'chatsEnabled': false,
-  })
-  AppStore.store.set('windowWidth', 800);
-  AppStore.store.set('windowHeight', 725);
+  AppStore.getClient().then(() => {
+    AppStore.store.set({
+      'windowWidth': 800,
+      'windowHeight': 725,
+      'actionsEnabled': false,
+      'chatsEnabled': false,
+    })
+    AppStore.store.set('windowWidth', 800);
+    AppStore.store.set('windowHeight', 725);
 
-  ChatSubscriber.register('message', onMessageHandler);
-  ChatSubscriber.register('connected', onConnectionHandler);
+    ChatSubscriber.getSubscriber().then(() => {
+      ChatSubscriber.register('message', onMessageHandler);
+      ChatSubscriber.register('connected', onConnectionHandler);
+      AppStore.store.set('isLoaded', true);
+    });
+  });
 };
 
 const shutdown = (): void => {
   AppStore.store.set({
     'chats': [],
     'chatCount': 0,
-    'actionCount': 0
+    'actionCount': 0,
+    'isLoaded': false
   });
 }
 
 const createMainWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: <number>AppStore.store.get('windowHeight'),
-    width: <number>AppStore.store.get('windowWidth'),
+    height: 200,
+    width: 200,
     minHeight: 725,
     title: 'ChatterBox',
     webPreferences: {

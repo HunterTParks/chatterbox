@@ -103,6 +103,10 @@ const StoreSchema: Record<string, unknown> = {
     chatsEnabled: {
         'type': 'boolean',
         default: false
+    },
+    isLoaded: {
+        type: 'boolean',
+        default: false
     }
 }
 

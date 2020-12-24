@@ -347,11 +347,15 @@ const main = (): void => {
     registerEvents();
     pollChatLogs();
     
-    setTimeout(() => {
-        loadingIcon.classList.add('hidden');
-        mainContent.classList.remove('hidden');
-        setHeightContext();
-    }, 2000);
+    const loadingScreen = setInterval(() => {
+        console.log('Loading: ', window.chatterBoxAPI.isLoaded() );
+        if( window.chatterBoxAPI.isLoaded() ) {
+            loadingIcon.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+            setHeightContext();
+            clearInterval(loadingScreen);
+        }
+    }, 500);
 }
 
 main();

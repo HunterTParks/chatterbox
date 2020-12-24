@@ -86,6 +86,7 @@
     "eslint": "^7.6.0",
     "eslint-plugin-import": "^2.20.0",
     "fork-ts-checker-webpack-plugin": "^5.0.14",
+    "keytar": "^7.3.0",
     "less": "^4.0.0",
     "less-loader": "^7.1.0",
     "node-loader": "^1.0.1",

@@ -8,15 +8,30 @@ class ChatSubscriber {
     registeredEvents: Array<string>;
 
     constructor() {
-        const ops: T.TMIOptions = {
-            identity: {
-                username: AppStore.store.get('username'),
-                password: AppStore.store.get('password'),
-            },
-            channels: AppStore.store.get('channels')
-        };
-        this.client = tmi.Client( <unknown>ops );
+        AppStore.getClient().then(( store: any ) => {
+            console.log('Store from chatSubscriber: ', AppStore.store);
+            const ops: T.TMIOptions = {
+                identity: {
+                    username: store.get('username'),
+                    password: store.get('password'),
+                },
+                channels: AppStore.store.get('channels')
+            };
+            this.client = tmi.Client( <unknown>ops );
+        })
+
         this.registeredEvents = [];
+    }
+
+    getSubscriber() {
+        return new Promise(( resolve, reject ) => {
+            const interval = setInterval(() => {
+                if( this.client && this.client !== undefined ) {
+                    clearInterval( interval );
+                    resolve( this.client );
+                }
+            }, 500);
+        });
     }
 
     register( event: string, handler: ( ...args: unknown[] ) => void ) {
