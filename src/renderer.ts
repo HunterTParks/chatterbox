@@ -7,6 +7,7 @@
  */
 
 import './styles/index.less';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const window: any;
 
 const registerEvents = () => {
@@ -108,14 +109,14 @@ const registerEvents = () => {
     })
 
     externalLinks.forEach(( item: HTMLElement ) => {
-        item.addEventListener('click', ( e ) => {
+        item.addEventListener('click', () => {
             window.chatterBoxAPI.openExternal( item.attributes.getNamedItem('link').value );
         });
     });
 
     internalLinks.forEach(( item: HTMLElement ) => {
         item.addEventListener('click', () => {
-            let link = item.attributes.getNamedItem('goto').value;
+            const link = item.attributes.getNamedItem('goto').value;
             const nav = document.getElementById(link);
 
             nav.click();
