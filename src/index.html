@@ -14,11 +14,16 @@
     <div id="main" class="hidden">
       <div id="sidebar-container">
         <div id="sidebar-list">
-          <div id="nav-instructions" class="sidebar-item selected">Instructions</div>
-          <div id="nav-credentials" class="sidebar-item">Credentials</div>
-          <div id="nav-channels" class="sidebar-item">Channels</div>
-          <div id="nav-chat" class="sidebar-item">Chat Logs</div>
-          <div id="nav-key-mapping" class="sidebar-item">Key Mappings</div>
+          <div id="upper-sidebar" class="sidebar-section">
+            <div id="nav-instructions" class="sidebar-item selected">Instructions</div>
+            <div id="nav-credentials" class="sidebar-item">Credentials</div>
+            <div id="nav-channels" class="sidebar-item">Channels</div>
+            <div id="nav-key-mapping" class="sidebar-item">Key Mappings</div>
+          </div>
+          <div id="lower-sidebar" class="sidebar-section">
+            <div id="nav-chat" class="sidebar-item">Chat Logs</div>
+            <div id="nav-settings" class="sidebar-item">Settings</div>
+          </div>
         </div>
         <div id="sidebar-toggle">
           <div class="sidebar-toggle-icon">
@@ -115,14 +120,6 @@
             </div>
           </form>
         </div>
-        <div id="chat" class="section hidden">
-          <div class="section-title">
-            <div class="form-title">Chat</div>
-          </div>
-          <div class="chat-list">
-            <textarea id="chat-logs" readonly></textarea>
-          </div>
-        </div>
         <div id="key-mapping" class="section hidden">
           <div class="section-title">
             <div class="form-title">Key Mapping</div>
@@ -160,6 +157,20 @@
               <button type="submit">Add</button>
             </div>
           </form>
+        </div>
+        <div id="chat" class="section hidden">
+          <div class="section-title">
+            <div class="form-title">Chat</div>
+          </div>
+          <div class="chat-list">
+            <textarea id="chat-logs" readonly></textarea>
+          </div>
+        </div>
+        <div id="settings" class="section hidden">
+          <div class="section-title">
+            <div class="form-title">Settings</div>
+          </div>
+          <div class="settings-container"></div>
         </div>
       </div>
       <div class="footer">

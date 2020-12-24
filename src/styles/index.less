@@ -114,21 +114,27 @@ body {
                 flex-direction: column;
                 flex-wrap: nowrap;
                 width: 100%;
-                
-                > .sidebar-item {
-                    overflow: hidden;
-                    padding: 1rem;
-                    width: 128px;
-                    cursor: pointer;
-                    transition: .3s;
 
-                    &:hover {
-                        background-color: @syntax-guide;
-                    }
+                > #lower-sidebar {
+                    margin-top: auto;
+                }
 
-                    &.selected {
-                        background-color: @syntax-fg;
-                        color: @syntax-bg;
+                > .sidebar-section {
+                    > .sidebar-item {
+                        overflow: hidden;
+                        padding: 1rem;
+                        width: 128px;
+                        cursor: pointer;
+                        transition: .3s;
+    
+                        &:hover {
+                            background-color: @syntax-guide;
+                        }
+    
+                        &.selected {
+                            background-color: @syntax-fg;
+                            color: @syntax-bg;
+                        }
                     }
                 }
             }
