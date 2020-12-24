@@ -30,6 +30,18 @@ type TMIOptions = {
 }
 
 /**
+ * EventHandler
+ * @type interface
+ * 
+ * 
+ * Used to send events to the IPCMain process
+ */
+interface EventHandler {
+    name: string,
+    handler: () => void
+}
+
+/**
  * StoreSchema
  * @type object
  * 
@@ -87,10 +99,15 @@ const StoreSchema: Record<string, unknown> = {
     actionsEnabled: {
         type: 'boolean',
         default: false
+    },
+    chatsEnabled: {
+        'type': 'boolean',
+        default: false
     }
 }
 
 export {
     TMIOptions,
-    StoreSchema
+    StoreSchema,
+    EventHandler
 }

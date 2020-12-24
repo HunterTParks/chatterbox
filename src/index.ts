@@ -1,8 +1,8 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'path';
 import robot from 'robotjs';
-import { ChatSubscriberFactory } from './components';
 import { AppStore } from './store';
+import { ChatSubscriber } from './components';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
@@ -13,14 +13,22 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 }
 
 const initialize = (): void => {
+  AppStore.store.set({
+    'windowWidth': 800,
+    'windowHeight': 725,
+    'actionsEnabled': false,
+    'chatsEnabled': false,
+  })
   AppStore.store.set('windowWidth', 800);
   AppStore.store.set('windowHeight', 725);
-}
+
+  ChatSubscriber.register('message', onMessageHandler);
+  ChatSubscriber.register('connected', onConnectionHandler);
+};
 
 const shutdown = (): void => {
   AppStore.store.set({
     'chats': [],
-    'actionsEnabled': false,
     'chatCount': 0,
     'actionCount': 0
   });
@@ -42,6 +50,58 @@ const createMainWindow = (): void => {
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+};
+
+const onMessageHandler = ( target: unknown, context: Record<string, unknown>, msg: string, self: unknown ) => {
+  console.log('Message handler!');
+  if ( self ) return;
+
+  const commandName = msg.trim();
+  const date = new Date();
+  console.log('Context: ', context);
+  const generatedMsg = `${context['display-name']} | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} | ${commandName}`
+  addChat( generatedMsg );
+
+  if ( AppStore.store.get('actionsEnabled') ) {
+      const keymappings: Array<Record<string, string>> = <Array<Record<string, string>>>AppStore.store.get('keyMappings');
+      console.log('keymappings: ', keymappings);
+
+      if( keymappings && keymappings.length > 0 ) {
+        keymappings.forEach( ( key: Record<string, string> ) => {
+          if( key.key === commandName ) {
+              sendCommand( key.action );
+          }
+        });
+      }
+  }
+};
+
+const onConnectionHandler = ( addr: unknown, port: unknown ) => {
+  console.log(`* Connected to ${addr}:${port}`);
+}
+
+const addChat = ( msg: string ) => {
+  const chats: Array<string> = <Array<string>>AppStore.store.get('chats');
+  if( chats && chats.length > 0 ) {
+      chats.push( msg );
+      AppStore.store.set('chats', chats);
+  } else {
+      AppStore.store.set('chats', [ msg ]);
+  }
+
+  let chatCount: number = <number>AppStore.store.get('chatCount');
+  if( chatCount && chatCount !== undefined ) {
+      chatCount++;
+      AppStore.store.set('chatCount', chatCount);
+  } else {
+      AppStore.store.set('chatCount', chats.length);
+  }
+}
+
+const sendCommand = ( keymap: string ) => {
+  if ( keymap && keymap !== undefined ) {
+    robot.keyTap( keymap );
+  }
 };
 
 // This method will be called when Electron has finished
@@ -70,13 +130,10 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.handle('receiveCommand', ( event, ...args ) => {
-  if ( args && args.length > 0 ) {
-    robot.keyTap(args[0]);
-  }
-});
-
 ipcMain.handle('openExternal', ( event, ...args ) => shell.openExternal( args[0] ));
+
+ipcMain.handle('connect', () => ChatSubscriber.connect());
+ipcMain.handle('disconnect', () => ChatSubscriber.disconnect());
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.

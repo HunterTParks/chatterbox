@@ -83,7 +83,7 @@ const registerEvents = () => {
             const toggle = item.querySelector('.button-on-container');
             toggle.classList.toggle('on');
 
-            if( item.id === 'toggle-chats' ) enableChat();
+            if( item.id === 'toggle-chats' ) toggleChat();
             if( item.id === 'toggle-actions' ) toggleActions();
         });
     });
@@ -283,6 +283,8 @@ const fillKeyMappingList = () => {
 
 const fillChatLogs = () => {
     const chats: Array<string> = window.chatterBoxAPI.getChatLogs();
+    document.getElementById('chat-logs').innerText = '';
+
 
     if ( chats && chats.length > 0 ) {
         chats.forEach( ( chat: string ) => {
@@ -304,47 +306,21 @@ const setHeightContext = () => {
     sidebar.style.height = `${window.innerHeight - 38}px`;
 }
 
-const enableChat = () => {
-    window.chatterBoxAPI.resetCount();
+const toggleChat = () => {
+    window.chatterBoxAPI.toggleChats();
+    console.log('Connection Status: ', window.chatterBoxAPI.isChatsEnabled());
 
-    const client = window.chatterBoxAPI.getChatSubscriberClient( onMessageHandler, onConnectionHandler );
+    if ( window.chatterBoxAPI.isChatsEnabled() ) {
+        window.chatterBoxAPI.connect();
+        window.chatterBoxAPI.resetCount();
+    } else {
+        window.chatterBoxAPI.disconnect();
+    }
 }
 
 const toggleActions = () => {
     window.chatterBoxAPI.toggleActions();
 }
-
-const onConnectionHandler = ( addr: unknown, port: unknown ) => {
-    console.log(`* Connected to ${addr}:${port}`);
-}
-
-const onMessageHandler = ( target: unknown, context: Record<string, unknown>, msg: string, self: unknown ) => {
-    console.log('Message handler!');
-    if ( self ) return;
-
-    const commandName = msg.trim();
-    const date = new Date();
-    console.log('Context: ', context);
-    const generatedMsg = `${context['display-name']} | ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} | ${commandName}`
-    window.chatterBoxAPI.addChat( generatedMsg );
-    addSingleChatToLogs( generatedMsg );
-    fillChatCount();
-
-    if ( window.chatterBoxAPI.isActionsEnabled() ) {
-        console.log('Is Enabled!');
-        const keymappings = window.chatterBoxAPI.getKeyMappings();
-
-        keymappings.forEach( ( key: Record<string, unknown>, index: number ) => {
-            console.log('Index: ', index);
-            console.log('Key: ', key);
-            console.log('Generated Message', generatedMsg);
-            if( key.key === commandName ) {
-                console.log('Sending Input!');
-                window.chatterBoxAPI.sendCommand( key.action );
-            }
-        });
-    }
-};
 
 const addSingleChatToLogs = ( msg: string ) => {
     const textarea = document.getElementById('chat-logs');
@@ -359,12 +335,17 @@ const setChatCountUI = ( amount: number ) => {
 
 const disableActions = () => window.chatterBoxAPI.toggleActions(false);
 
+const pollChatLogs = () => {
+    setInterval(() => fillChatLogs(), 5000);
+}
+
 const main = (): void => {
     const mainContent = document.getElementById('main');
     const loadingIcon = document.getElementById('loading');
     disableActions();
     fillOutFields();
     registerEvents();
+    pollChatLogs();
     
     setTimeout(() => {
         loadingIcon.classList.add('hidden');

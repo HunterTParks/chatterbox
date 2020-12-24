@@ -1,5 +1,5 @@
-import ChatSubscriberFactory from './chatSubscriberFactory';
+import { default as ChatSubscriber } from './chatSubscriberSingleton';
 
 export {
-    ChatSubscriberFactory
+    ChatSubscriber
 }
