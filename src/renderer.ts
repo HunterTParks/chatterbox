@@ -327,6 +327,13 @@ const toggleChat = () => {
 }
 
 const toggleActions = () => {
+    if( 
+        !window.chatterBoxAPI.isChatsEnabled() &&
+        !window.chatterBoxAPI.isActionsEnabled()
+    ) {
+        document.getElementById('toggle-chats').click();
+    }
+
     window.chatterBoxAPI.toggleActions();
 }
 
