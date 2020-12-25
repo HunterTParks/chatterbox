@@ -114,7 +114,15 @@ const addChat = ( msg: string ) => {
 
 const sendCommand = ( keymap: string ) => {
   if ( keymap && keymap !== undefined ) {
-    robot.keyTap( keymap );
+    const possibleMouseActions = [ 'leftmouse', 'rightmouse' ];
+
+    if( possibleMouseActions.includes(keymap) ) {
+      const mouseButton = keymap.replace( 'mouse', '' );
+      robot.mouseClick( mouseButton, false );
+    } else {
+      robot.keyTap( keymap );
+    }
+
     AppStore.store.set('actionCount', <number>AppStore.store.get('actionCount') + 1);
   }
 };
