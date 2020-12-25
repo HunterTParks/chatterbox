@@ -20,6 +20,8 @@ const registerEvents = () => {
     const keyMappingForm  = document.getElementById('key-mapping-form');
     const externalLinks = document.querySelectorAll('to-browser');
     const internalLinks = document.querySelectorAll('to-section');
+    const keymappingInstructions = document.getElementById('instructional-overlay');
+    const keymappingIcon = document.getElementById('hover-icon-container');
     const modal = document.getElementById('modal');
 
     window.addEventListener('resize', () => {
@@ -108,7 +110,7 @@ const registerEvents = () => {
 
         fillKeyMappingList();
         registerKeyMappingLiEvents();
-    })
+    });
 
     externalLinks.forEach(( item: HTMLElement ) => {
         item.addEventListener('click', () => {
@@ -123,6 +125,17 @@ const registerEvents = () => {
 
             nav.click();
         });
+    });
+
+    keymappingIcon.addEventListener('mouseover', () => {
+        keymappingIcon.classList.toggle('hidden');
+        keymappingInstructions.classList.toggle('mouseover');
+    });
+
+    keymappingInstructions.addEventListener('mouseout', () => {
+        console.log('Mouse out');
+        keymappingIcon.classList.toggle('hidden');
+        keymappingInstructions.classList.toggle('mouseover');
     });
 
     modal.addEventListener('fire', () => {
