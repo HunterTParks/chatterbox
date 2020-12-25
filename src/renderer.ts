@@ -63,6 +63,8 @@ const registerEvents = () => {
             password.value && password.value !== undefined
         ) {
             window.chatterBoxAPI.setCredentials(username.value, password.value);
+            window.chatterBoxAPI.sendLog('info', 'Credentials were saved.');
+            password.value = '';
         }
     });
 
@@ -175,13 +177,10 @@ const registerKeyMappingLiEvents = () => {
 
 const fillOutFields = () => {
     const username: HTMLInputElement = <HTMLInputElement>document.getElementById('username');
-    const password: HTMLInputElement = <HTMLInputElement>document.getElementById('password');
-    const [ setUsername, setPassword ] = window.chatterBoxAPI.getCredentials();
+    const [ setUsername ] = window.chatterBoxAPI.getCredentials();
     
     if ( setUsername )
         username.value = setUsername;
-    if ( setPassword )
-        password.value = setPassword;
 
     fillChannelList();
     fillKeyMappingList();
