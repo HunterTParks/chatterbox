@@ -347,6 +347,23 @@ const setActionCountUI = ( amount: number ) => {
     actionNode.innerText = `${amount}`;
 }
 
+const setNotificationsUI = ( level: string, message: string ) => {
+    const notificationsNode = document.getElementById('notifications');
+    notificationsNode.classList.add( `${level}` );
+    notificationsNode.classList.add( 'active' );
+    notificationsNode.innerText = `${message}`;
+}
+
+const clearNotification = () => {
+    const notificationsNode = document.getElementById('notifications');
+    notificationsNode.classList.remove('active');
+
+    const regexClassList = new RegExp(/\b(warn|log)\b/, 'g');
+    if( notificationsNode.className.match( regexClassList ) ) {
+        notificationsNode.className = notificationsNode.className.replace(regexClassList, '');
+    }
+}
+
 const disableActions = () => window.chatterBoxAPI.toggleActions(false);
 
 const pollChatLogs = () => {
@@ -357,6 +374,22 @@ const pollActionsCount = () => {
     setInterval(() => fillActionCount(), 5000);
 }
 
+const pollNotifications = () => {
+    setInterval(() => {
+        const notificationQueue: Array<Record<string, string>> = <Array<Record<string, string>>>window.chatterBoxAPI.getNotificationQueue();
+
+        if( notificationQueue && notificationQueue.length > 0 ) {
+            const notification = window.chatterBoxAPI.getFirstNotification();
+            console.log('Notification: ', notification);
+            setNotificationsUI( notification.level, notification.message );
+
+            setTimeout(() => {
+                clearNotification();
+            }, 5000);
+        }
+    }, 200);
+}
+
 const main = (): void => {
     const mainContent = document.getElementById('main');
     const loadingIcon = document.getElementById('loading');
@@ -365,6 +398,7 @@ const main = (): void => {
     registerEvents();
     pollChatLogs();
     pollActionsCount();
+    pollNotifications();
     
     const loadingScreen = setInterval(() => {
         if( window.chatterBoxAPI.isLoaded() ) {

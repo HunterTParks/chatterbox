@@ -94,6 +94,33 @@ body {
     > #loading {
         transition: 1s;
     }
+
+    > #notifications {
+        display: block;
+        position: fixed;
+        width: 94%;
+        z-index: 5;
+        top: -20px;
+        padding: 0 20px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        background-color: black;
+        color: white;
+        transition: .3s;
+
+        &.active {
+            top: 0;
+        }
+
+        &.info {
+            background-color: green;
+        }
+
+        &.warn {
+            background-color: red;
+            color: white;
+        }
+    }
     
     > #main {
         display: flex;

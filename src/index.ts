@@ -1,6 +1,8 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'path';
+import fs from 'fs';
 import robot from 'robotjs';
+import log from 'electron-log';
 import { AppStore } from './store';
 import { ChatSubscriber } from './components';
 
@@ -13,6 +15,15 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 }
 
 const initialize = (): void => {
+  const LogPath = app.getPath('userData') + '\\Logs';
+  log.transports.console.level = false;
+  log.transports.file.fileName = 'notifications.txt';
+
+  if(!fs.existsSync(LogPath)) {
+    fs.mkdirSync(LogPath);
+    fs.writeFileSync(`${LogPath}\\notifications.txt`, '');
+  }
+
   AppStore.getClient().then(() => {
     AppStore.store.set({
       'windowWidth': 800,
@@ -138,6 +149,26 @@ ipcMain.handle('openExternal', ( event, ...args ) => shell.openExternal( args[0]
 
 ipcMain.handle('connect', () => ChatSubscriber.connect());
 ipcMain.handle('disconnect', () => ChatSubscriber.disconnect());
+ipcMain.handle('log-notification', ( event, [ level, message ] ) => {
+  switch( level ) {
+    case 'info':
+      log.info(message);
+      break;
+    case 'warn':
+      log.warn(message);
+      break;
+    default:
+  }
+
+  const notificationQueue: Array<Record<string, string>> = <Array<Record<string, string>>>AppStore.store.get('notificationQueue');
+
+  if( notificationQueue && notificationQueue.length > 0 ) {
+    notificationQueue.push({ level, message });
+    AppStore.store.set('notificationQueue', notificationQueue);
+  } else {
+    AppStore.store.set('notificationQueue', [ { level, message } ]);
+  }
+});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.

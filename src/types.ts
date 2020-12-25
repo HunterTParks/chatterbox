@@ -107,6 +107,16 @@ const StoreSchema: Record<string, unknown> = {
     isLoaded: {
         type: 'boolean',
         default: false
+    },
+    notificationQueue: {
+        type: 'array',
+        items: {
+            type: 'object',
+            properties: {
+                level: { type: 'string' },
+                message: { type: 'string' }
+            }
+        }
     }
 }
 

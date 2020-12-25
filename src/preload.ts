@@ -85,5 +85,19 @@ contextBridge.exposeInMainWorld('chatterBoxAPI', {
     },
     connect: () => ipcRenderer.invoke('connect'),
     disconnect: () => ipcRenderer.invoke('disconnect'),
-    isLoaded: () => AppStore.store.get('isLoaded')
+    isLoaded: () => AppStore.store.get('isLoaded'),
+    getNotificationQueue: () => AppStore.store.get('notificationQueue'),
+    getFirstNotification: () => {
+        const notificationQueue: Array<Record<string, string>> = <Array<Record<string, string>>>AppStore.store.get('notificationQueue');
+
+        if( notificationQueue && notificationQueue.length > 0 ) {
+            const notification = notificationQueue.shift();
+
+            AppStore.store.set('notificationQueue', notificationQueue);
+            return notification;
+        }
+
+        return undefined;
+    },
+    sendLog: ( level: string, message: string ) => ipcRenderer.invoke('log-notification', [ level, message ]),
 });
