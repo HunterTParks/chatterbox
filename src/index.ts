@@ -78,12 +78,12 @@ const onMessageHandler = ( target: unknown, context: Record<string, unknown>, ms
   addChat( generatedMsg );
 
   if ( AppStore.store.get('actionsEnabled') ) {
-      const keymappings: Array<Record<string, string>> = <Array<Record<string, string>>>AppStore.store.get('keyMappings');
+      const keymappings: Array<Record<string, unknown>> = <Array<Record<string, unknown>>>AppStore.store.get('keyMappings');
 
       if( keymappings && keymappings.length > 0 ) {
         keymappings.forEach( ( key: Record<string, string> ) => {
           if( key.key === commandName ) {
-              sendCommand( key.action );
+              sendCommand( key.action, <number><unknown>key.duration );
           }
         });
       }
@@ -112,15 +112,36 @@ const addChat = ( msg: string ) => {
   }
 }
 
-const sendCommand = ( keymap: string ) => {
+const sendCommand = ( keymap: string, duration: number ) => {
   if ( keymap && keymap !== undefined ) {
     const possibleMouseActions = [ 'leftmouse', 'rightmouse' ];
 
     if( possibleMouseActions.includes(keymap) ) {
       const mouseButton = keymap.replace( 'mouse', '' );
-      robot.mouseClick( mouseButton, false );
+      if( duration && duration > 0 ) {
+        robot.mouseToggle( 'down', mouseButton );
+        setTimeout(() => robot.mouseToggle('up', mouseButton), duration);
+      } else {
+        robot.mouseClick( mouseButton, false );
+      }
     } else {
-      robot.keyTap( keymap );
+      if( duration && duration > 0 ) {
+        const timestamp = new Date();
+        let timestampToCompare: Date;
+
+        const keyHoldInterval = setInterval(() => {
+          timestampToCompare = new Date();
+
+          if( timestampToCompare.getSeconds() - timestamp.getSeconds() >= ( duration / 1000 ) ) {
+            clearInterval( keyHoldInterval );
+          }
+
+          robot.keyTap( keymap );
+        }, 100);
+
+      } else {
+        robot.keyTap( keymap );
+      }
     }
 
     AppStore.store.set('actionCount', <number>AppStore.store.get('actionCount') + 1);

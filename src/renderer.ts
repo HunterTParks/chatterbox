@@ -98,14 +98,16 @@ const registerEvents = () => {
 
         const aliasInput: HTMLInputElement = <HTMLInputElement>document.getElementById('key-alias-input');
         const commandInput: HTMLInputElement = <HTMLInputElement>document.getElementById('key-command-input');
+        const durationInput: HTMLInputElement = <HTMLInputElement>document.getElementById('duration-input');
 
         if( 
             aliasInput && aliasInput !== undefined &&
-            commandInput && commandInput !== undefined    
+            commandInput && commandInput !== undefined
         ) {
-            window.chatterBoxAPI.addKeyMapping({ "key": aliasInput.value, "action": commandInput.value });
+            window.chatterBoxAPI.addKeyMapping({ "key": aliasInput.value, "action": commandInput.value, "duration": <number>(<unknown>durationInput.value) });
             aliasInput.value = '';
             commandInput.value = '';
+            durationInput.value = '0';
         }
 
         fillKeyMappingList();
@@ -284,7 +286,8 @@ const fillKeyMappingList = () => {
         keyMappings.forEach(( item: Record<string, string>, index: number ) => {
             const li = generateListItem( index );
             li.appendChild(generateTitleElement( item.key ));
-            li.appendChild(generateTitleElement( item.action ))
+            li.appendChild(generateTitleElement( item.action ));
+            li.appendChild(generateTitleElement( item.duration ));
             li.appendChild(generateButtons( index ));
             
             keyMappingList.appendChild(li); 

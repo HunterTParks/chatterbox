@@ -92,7 +92,11 @@ const StoreSchema: Record<string, unknown> = {
             type: 'object',
             properties: {
                 key: { type: 'string' },
-                action: { type: 'string' }
+                action: { type: 'string' },
+                duration: { 
+                    type: 'number',
+                    default: 0
+                }
             }
         }
     },
